@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Редактор и Корректор</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>AI Редактор и Корректор</h1>
+            <p class="subtitle">Профессиональное улучшение текстов для ясности, связности и воздействия</p>
+            <p class="description">
+                Наш AI-ассистент поможет вам отредактировать и улучшить любой текст: от академических работ до деловых документов. 
+                Получите детальный анализ, исправления ошибок и профессиональные рекомендации по улучшению.
+            </p>
+        </header>
+
+        <!-- Input Form -->
+        <section class="input-section">
+            <div class="card">
+                <div class="card__body">
+                    <form id="editorForm" class="editor-form">
+                        <div class="form-group">
+                            <label for="textInput" class="form-label">Введите ваш текст для анализа и редактирования</label>
+                            <textarea 
+                                id="textInput" 
+                                class="form-control" 
+                                rows="12" 
+                                placeholder="Вставьте или напишите здесь ваш текст для анализа..."
+                                required
+                            ></textarea>
+                            <div class="text-stats">
+                                <span id="wordCount">Слов: 0</span>
+                                <span id="charCount">Символов: 0</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="targetAudience" class="form-label">Целевая аудитория</label>
+                                <input 
+                                    type="text" 
+                                    id="targetAudience" 
+                                    class="form-control" 
+                                    placeholder="Например: студенты, коллеги, клиенты"
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="documentPurpose" class="form-label">Цель документа</label>
+                                <select id="documentPurpose" class="form-control">
+                                    <option value="">Выберите цель документа</option>
+                                    <option value="academic">Академическая работа</option>
+                                    <option value="business">Деловой отчет</option>
+                                    <option value="creative">Творческий текст</option>
+                                    <option value="blog">Блог-пост</option>
+                                    <option value="presentation">Презентация</option>
+                                    <option value="other">Другое</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="additionalContext" class="form-label">Дополнительный контекст (опционально)</label>
+                            <textarea 
+                                id="additionalContext" 
+                                class="form-control" 
+                                rows="3" 
+                                placeholder="Укажите любую дополнительную информацию, которая поможет в редактировании..."
+                            ></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn--primary btn--lg">
+                                <span class="btn-text">Анализировать и отредактировать</span>
+                                <span class="btn-loading hidden">Анализируем...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Section -->
+        <section id="progressSection" class="progress-section hidden">
+            <div class="card">
+                <div class="card__body">
+                    <div class="progress-content">
+                        <h3>Анализируем ваш текст</h3>
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                        <p id="progressText">Инициализация анализа...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="results-section hidden">
+            <div class="results-header">
+                <h2>Результаты анализа</h2>
+                <button id="newAnalysisBtn" class="btn btn--secondary">Новый анализ</button>
+            </div>
+
+            <!-- Summary -->
+            <div class="result-card">
+                <div class="result-header" data-section="summary">
+                    <div class="result-icon">📋</div>
+                    <h3>Резюме</h3>
+                    <button class="copy-btn" data-copy="summary">Копировать</button>
+                </div>
+                <div id="summaryContent" class="result-content">
+                    <!-- Content will be populated by JS -->
+                </div>
+            </div>
+
+            <!-- Errors -->
+            <div class="result-card">
+                <div class="result-header" data-section="errors">
+                    <div class="result-icon">🔍</div>
+                    <h3>Обнаруженные ошибки</h3>
+                    <button class="copy-btn" data-copy="errors">Копировать</button>
+                </div>
+                <div id="errorsContent" class="result-content">
+                    <!-- Content will be populated by JS -->
+                </div>
+            </div>
+
+            <!-- Fact Check -->
+            <div class="result-card">
+                <div class="result-header" data-section="factcheck">
+                    <div class="result-icon">✅</div>
+                    <h3>Проверка фактов</h3>
+                    <button class="copy-btn" data-copy="factcheck">Копировать</button>
+                </div>
+                <div id="factcheckContent" class="result-content">
+                    <!-- Content will be populated by JS -->
+                </div>
+            </div>
+
+            <!-- Editorial Suggestions -->
+            <div class="result-card">
+                <div class="result-header" data-section="suggestions">
+                    <div class="result-icon">💡</div>
+                    <h3>Редакторские предложения</h3>
+                    <button class="copy-btn" data-copy="suggestions">Копировать</button>
+                </div>
+                <div id="suggestionsContent" class="result-content">
+                    <!-- Content will be populated by JS -->
+                </div>
+            </div>
+
+            <!-- Enhancement Opportunities -->
+            <div class="result-card">
+                <div class="result-header" data-section="enhancements">
+                    <div class="result-icon">🚀</div>
+                    <h3>Возможности улучшения</h3>
+                    <button class="copy-btn" data-copy="enhancements">Копировать</button>
+                </div>
+                <div id="enhancementsContent" class="result-content">
+                    <!-- Content will be populated by JS -->
+                </div>
+            </div>
+
+            <!-- Revised Draft -->
+            <div class="result-card">
+                <div class="result-header" data-section="revised">
+                    <div class="result-icon">📝</div>
+                    <h3>Отредактированный текст</h3>
+                    <button class="copy-btn" data-copy="revised">Копировать</button>
+                </div>
+                <div id="revisedContent" class="result-content">
+                    <!-- Content will be populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Toast for copy feedback -->
+        <div id="toast" class="toast hidden">
+            <span id="toastMessage">Текст скопирован в буфер обмена</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
